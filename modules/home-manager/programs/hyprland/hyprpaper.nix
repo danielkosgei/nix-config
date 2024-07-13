@@ -4,10 +4,10 @@
     enable = true;
     settings = {
       preload = [
-        "~/shadow/modules/home-manager/programs/hyprland/wallpapers/smd.jpg"
+        "~/shadow/modules/home-manager/programs/hyprland/wallpapers/houses.png"
       ];
       wallpaper = [
-        "eDP-1,~/shadow/modules/home-manager/programs/hyprland/wallpapers/smd.jpg"
+        "eDP-1,~/shadow/modules/home-manager/programs/hyprland/wallpapers/houses.png"
       ];
     };
   };

@@ -15,8 +15,7 @@
     xdg-utils
     neofetch
     htop
-    heroic
-    kodi-gbm
+    chromium
   ];
   
   nixpkgs = {

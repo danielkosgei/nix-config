@@ -40,12 +40,24 @@
   boot = {
     supportedFilesystems = [ "ntfs" "exfat" "mtpfs" ];
     loader = {
-      timeout = 2;
+      timeout = 3;
       efi = {
         canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
       };
-      systemd-boot = {
+      grub = {
         enable = true;
+        devices = [ "nodev" ];
+        efiSupport = true;
+        useOSProber = true;
+        extraEntries = ''
+        menuentry "Reboot" {
+          reboot
+        }
+        menuentry "Poweroff" {
+          halt
+        }
+  '';
       };
     };
   }; 
@@ -143,7 +155,7 @@
       };
     };
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" "Agave" ]; })
+      (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" "Agave" "VictorMono" ]; })
       font-awesome
       powerline-fonts
       powerline-symbols

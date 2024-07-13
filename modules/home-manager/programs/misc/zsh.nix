@@ -4,14 +4,14 @@
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-    };
+    # oh-my-zsh = {
+    #   enable = true;
+    #   plugins = [ "git" ];
+    # };
     initExtraFirst = ''
       DISABLE_MAGIC_FUNCTIONS=true
       export "MICRO_TRUECOLOR=1"
+      export PATH="$HOME/.config/composer/vendor/bin:$PATH"
     '';
   };
-
 }

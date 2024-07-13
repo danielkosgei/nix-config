@@ -1,8 +1,8 @@
 /* Mocha Mauve */
-@define-color accent #8839ef;
-@define-color txt #4c4f69;
-@define-color bg #eff1f5;
-@define-color bg2 #dce0e8;
+@define-color accent #cc241d;
+@define-color txt #ebdbb2;
+@define-color bg #1d2021;
+@define-color bg2 #282828;
 
  * {
     font-family: 'JetBrains Mono Nerd Font', monospace;

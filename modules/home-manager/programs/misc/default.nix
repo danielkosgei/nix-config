@@ -1,7 +1,7 @@
 {
   imports = [
     ./bat.nix
-    ./discord.nix
+    # ./discord.nix
     ./git.nix
     ./gtk.nix
     ./kitty.nix

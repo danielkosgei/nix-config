@@ -8,16 +8,16 @@
       defaultTimeout = 5000;
       borderSize = 2;
       borderRadius = 5;
-      backgroundColor = "#dce0e8";
-      borderColor = "#cba6f7";
-      progressColor = "over #313244";
-      textColor = "#4c4f69";
+      backgroundColor = "#1d2021";
+      borderColor = "#cc241d";
+      progressColor = "over #458588";
+      textColor = "#ebdbb2";
       icons = true;
       actions = true;
       extraConfig = ''
         text-alignment=center
         [urgency=high]
-        border-color=#fab387
+        border-color=#9d0006
       '';
     };
   };

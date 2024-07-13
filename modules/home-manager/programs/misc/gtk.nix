@@ -17,27 +17,19 @@
     };
 
     iconTheme = {
-      name = "Papirus-Light";
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "latte";
-        accent = "mauve";
-      };
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
     };
 
     theme = {
-      name = "Catppuccin-Latte-Compact-Mauve-Light";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "mauve" ];
-        size = "compact";
-        # tweaks = [ "rimless" ];
-        variant = "latte";
-      };
+      name = "Flat-Remix-GTK-Grey-Darkest";
+      package = pkgs.flat-remix-gtk;
     };
 
     cursorTheme = {
-      name = "Bibata-Modern-Amber";
+      name = "Bibata-Modern-Classic";
       package = pkgs.bibata-cursors;
-      size = 22;
+      size = 16;
     };
   };
 
@@ -45,13 +37,13 @@
     enable = true;
     platformTheme.name = "gtk";
     style = {
-      name = "kvantum";
+      name = "breeze";
     };
   };
 
   home.pointerCursor = {
-    name = "Bibata-Modern-Amber";
+    name = "Bibata-Modern-Classic";
     package = pkgs.bibata-cursors;
-    size = 22;
+    size = 16;
   };
 }

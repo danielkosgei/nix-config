@@ -26,7 +26,7 @@
         gaps_in = 3;
         gaps_out = 7;
         border_size = 2;
-        "col.active_border" = "rgb(8839ef)";
+        "col.active_border" = "rgb(cc241d)";
         "col.inactive_border" = "0x00000000";
 
       };
@@ -43,13 +43,13 @@
 
       master = {
         # change this value to true if not aesthetic
-        new_is_master = false;
+        new_status = true;
       };
 
       decoration = {
         rounding = 9;
-        # active_opacity = 0.90;
-        # inactive_opacity = 0.90;
+        active_opacity = 1;
+        inactive_opacity = 1;
         # fullscreen_opacity = 1.0;
 
         blur = {
@@ -190,6 +190,7 @@
         "float, title:^(Picture-in-Picture)$"
         "opacity 1.0 override 1.0 override, title:^(Picture-in-Picture)$"
         "pin, title:^(Picture-in-Picture)$"
+        "opacity 0.5 override 0.5 override, title:(Thunar)"
         "opacity 1.0 override 1.0 override, title:^(.*imv.*)$"
         "opacity 1.0 override 1.0 override, title:^(.*mpv.*)$"
         "opacity 1.0 override 1.0 override, class:(Aseprite)"

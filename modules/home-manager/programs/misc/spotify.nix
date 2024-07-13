@@ -1,11 +1,10 @@
-{ pkgs, inputs, ... }:
+ {pkgs, inputs, ... }:
 let spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
 in {
   imports = [ inputs.spicetify-nix.homeManagerModule ];
   programs.spicetify = {
     enable = true;
-    theme = spicePkgs.themes.catppuccin;
-    colorScheme = "latte";
+    theme = spicePkgs.themes.Onepunch;
     enabledCustomApps = with spicePkgs.apps; [ lyrics-plus ];
     enabledExtensions = with spicePkgs.extensions; [
       hidePodcasts
