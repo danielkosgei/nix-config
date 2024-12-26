@@ -1,13 +1,12 @@
 { pkgs, ... }:
 {
-  fonts.fontconfig.enable = true;
-  home.packages = [
-    pkgs.nerdfonts
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-    pkgs.twemoji-color-font
-    pkgs.noto-fonts-emoji
+  #fonts.fontconfig.enable = true;
+  #home.packages = [
+   # pkgs.nerd-fonts.jetbrains-mono
+   # pkgs.twemoji-color-font
+   # pkgs.noto-fonts-emoji
 
-  ];
+  #];
 
   gtk = {
     enable = true;
@@ -33,13 +32,13 @@
     };
   };
 
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-    style = {
-      name = "breeze";
-    };
-  };
+  #qt = {
+  #  enable = true;
+  #  platformTheme.name = "gtk";
+  #  style = {
+  #    name = "breeze";
+  #  };
+  #};
 
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";

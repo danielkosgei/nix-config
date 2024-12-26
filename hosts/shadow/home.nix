@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   
@@ -7,14 +7,14 @@
     ../../modules/home-manager/programs
   ];
 
-  home.username = "dd0n3";
-  home.homeDirectory = "/home/dd0n3";
+  home.username = "danny";
+  home.homeDirectory = "/home/danny";
 
-  home.stateVersion = "24.05"; 
+  home.stateVersion = "24.11"; 
 
 
-  home.packages = with pkgs; [
-    
+  home.packages = [
+    inputs.hyprland-qtutils.packages."${pkgs.system}".default 
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -28,6 +28,10 @@
 
   home.sessionVariables = {
     EDITOR = "vim";
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
   };
 
   # Let Home Manager install and manage itself.

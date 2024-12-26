@@ -1,6 +1,6 @@
 { inputs, ... }: 
 {
-  imports = [ (import ./hyprland.nix) ]
-    ++ [ (import ./config.nix) ]
-    ++ [ (import ./hyprpaper.nix) ];
+  imports = [ (import ./hyprpaper.nix) ]
+    ++ [ (import ./config.nix) ];
+    #++ [ (import ./hyprpaper.nix) ];
 }

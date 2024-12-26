@@ -10,6 +10,7 @@
     gcc
     gnumake
     license-generator
-    inetutils    
+    inetutils
+    supabase-cli    
   ];
 }

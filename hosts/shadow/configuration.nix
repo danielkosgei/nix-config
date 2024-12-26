@@ -130,7 +130,8 @@
   programs = {
     hyprland = {
       enable = true;
-      xwayland.enable = true;
+      package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+      # xwayland.enable = true;
     };
   };
 
@@ -155,7 +156,8 @@
       };
     };
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "Meslo" "JetBrainsMono" "Agave" "VictorMono" ]; })
+      nerd-fonts.agave
+      nerd-fonts.jetbrains-mono
       font-awesome
       powerline-fonts
       powerline-symbols
@@ -163,9 +165,9 @@
   };
 
   # User account
-  users.users.dd0n3 = {
+  users.users.danny = {
     isNormalUser = true;
-    description = "dd0n3";
+    description = "danny";
     extraGroups = [ "networkmanager" "wheel" "disk" "power" "video" ];
     packages = with pkgs; [
     ];
@@ -175,7 +177,7 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = {
-      "dd0n3" = import ./home.nix;
+      "danny" = import ./home.nix;
     };
   };
 
@@ -223,6 +225,11 @@
    # greetd.tuigreet
   ];
 
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
   # KDE Connect
   # kdeconnect.enable = true
 
@@ -234,7 +241,7 @@
     enable = true;
     xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
+    #  xdg-desktop-portal-hyprland
     ];
     # wlr.enable = true;
   };

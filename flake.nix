@@ -9,10 +9,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+    };
 
-    catppuccin-bat = {
-      url = "github:catppuccin/bat";
-      flake = false;
+    hyprland-qtutils = {
+      url = "github:hyprwm/hyprland-qtutils";
     };
 
     catppuccin-starship = {
@@ -21,14 +24,19 @@
     };
     
     spicetify-nix = {
-      url = "github:the-argus/spicetify-nix";
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dedsec-grub-theme = {
+      url = "gitlab:VandalByte/dedsec-grub-theme";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
 
 };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, hyprland-qtutils, ... }@inputs: {
     nixosConfigurations = {
       shadow = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
