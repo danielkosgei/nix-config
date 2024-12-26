@@ -27,7 +27,9 @@
   };
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "nvim";
+    TERMINAL = "kitty";
+    BROWSER = "firefox";
   };
 
   wayland.windowManager.hyprland = {

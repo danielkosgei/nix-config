@@ -16,6 +16,8 @@
     neofetch
     htop
     chromium
+    wofi
+    vesktop
   ];
   
   nixpkgs = {

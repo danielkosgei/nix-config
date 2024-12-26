@@ -43,6 +43,7 @@
         modules = [
           ./hosts/shadow/configuration.nix
           inputs.home-manager.nixosModules.default
+          inputs.dedsec-grub-theme.nixosModule
         ];
       };
     };

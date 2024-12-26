@@ -46,6 +46,12 @@
         efiSysMountPoint = "/boot";
       };
       grub = {
+        dedsec-theme = {
+          enable = true;
+          style = "reaper";
+          icon = "color";
+          resolution = "1080p";
+        };
         enable = true;
         devices = [ "nodev" ];
         efiSupport = true;
