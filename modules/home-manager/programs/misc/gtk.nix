@@ -8,13 +8,13 @@
     };
 
     iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      name = "gruvboxPlus";
+      package = pkgs.gruvbox-plus-icons;
     };
 
     theme = {
-      name = "Flat-Remix-GTK-Grey-Darkest";
-      package = pkgs.flat-remix-gtk;
+      name = "GruvboxMaterial";
+      package = pkgs.gruvbox-material-gtk-theme;
     };
 
     cursorTheme = {
