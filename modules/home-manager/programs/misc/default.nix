@@ -3,14 +3,13 @@
     ./bat.nix
     #./discord.nix
     ./git.nix
-    ./gtk.nix
+    #./gtk.nix
     ./kitty.nix
     ./lf.nix
-    ./mako.nix
+    #./mako.nix
     ./mpv.nix
     ./others.nix
-    ./starship.nix
+    ./nushell.nix
     ./spotify.nix
-    ./zsh.nix
   ];
 }

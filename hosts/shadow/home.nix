@@ -1,7 +1,8 @@
-{ config, pkgs, inputs, ... }:
-
 {
-
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/development
     ../../modules/home-manager/programs
@@ -10,30 +11,26 @@
   home.username = "danny";
   home.homeDirectory = "/home/danny";
 
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "24.11";
 
   home.packages = [
-    inputs.hyprland-qtutils.packages."${pkgs.system}".default
   ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
-
   ];
 
   home.file = {
-
   };
 
   home.sessionVariables = {
-    BROWSER = "firefox";
-    TERMINAL = "kitty";
     EDITOR = "nvim";
+    TERMINAL = "kitty";
+    BROWSER = "firefox";
+
+    STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
   };
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-  };
-
+  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

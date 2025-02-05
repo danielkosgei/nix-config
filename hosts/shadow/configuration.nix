@@ -1,13 +1,19 @@
-{ config, pkgs, inputs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Enable Experimental Features and Package Management
   nix = {
+    extraOptions = ''
+      trusted-users = root danny
+    '';
     settings = {
       experimental-features = ["nix-command" "flakes"];
       auto-optimise-store = true;
@@ -15,30 +21,15 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 7d";
+      options = "--delete-older-than 10d";
     };
   };
 
-  # Systemd stuff 
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "grpahical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-  };
-
-  # Bootloader and Filesystems 
+  # Bootloader and Filesystems
   boot = {
-    supportedFilesystems = [ "ntfs" "exfat" "mtpfs" ];
+    # Kernel
+    kernelPackages = pkgs.linuxPackages_zen;
+    supportedFilesystems = ["ntfs" "exfat" "mtpfs"];
     loader = {
       timeout = 3;
       efi = {
@@ -48,42 +39,45 @@
       grub = {
         dedsec-theme = {
           enable = true;
-          style = "spyware";
+          style = "compact";
           icon = "color";
           resolution = "1080p";
         };
         enable = true;
-        devices = [ "nodev" ];
+        devices = ["nodev"];
         efiSupport = true;
         useOSProber = true;
         extraEntries = ''
-        menuentry "Reboot" {
-          reboot
-        }
-        menuentry "Poweroff" {
-          halt
-        }
-  '';
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
       };
     };
-  }; 
-
-  # Enable Display Manager
-  # services.greetd = {
-  #  enable = true;
-  #  settings = {
-  #    default_session = {
-  #      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --time-format '%I:%M %p | %a • %h | %F' --cmd Hyprland";
-  #      user = "greeter";
-  #    };
-  #  };
-  #};
+  };
 
   # Enable Networking
   networking = {
     hostName = "shadow";
     networkmanager.enable = true;
-    # firewall.allowedTCPPorts = [ 80 443 ];
+    firewall = rec {
+      enable = true;
+      allowedTCPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        } # KDE Connect
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        } # KDE Connect
+      ];
+    };
   };
 
   # Set your time zone.
@@ -98,12 +92,12 @@
 
   # Services
   services = {
-    # Desktop Environment
-    # xserver = {
-    #  enable = true;
-    #   displayManager.sddm.enable = true;
-    #};
-    # desktopManager.plasma6.enable = true;
+    xserver = {
+      enable = true;
+      videoDrivers = ["modesetting" "fbdev"];
+    };
+    displayManager.sddm.enable = true;
+    desktopManager.plasma6.enable = true;
 
     # Sound with pipewire
     pipewire = {
@@ -115,60 +109,61 @@
       };
     };
 
+    # bluetooth
+    #   blueman.enable = true;
+
     # Printing
     # printing.enable = true;
-
-    # File Management
-    gvfs.enable = true;
-    tumbler.enable = true;
 
     # SSD
     fstrim.enable = true;
 
     # OpenSSH daemon
     # openssh.enable = true;
-
-    tlp = {
-      enable = true;
-      settings = {
-      	CPU_SCALING_GOVERNOR_ON_AC = "performance";
-	CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-	CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-	CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-
-	CPU_MIN_PERF_ON_AC = 0;
-	CPU_MAX_PERF_ON_AC = 100;
-	CPU_MIN_PERFORMANCE_ON_BAT = 0;
-	CPU_MAX_PERF_ON_BAT = 20;
-
-	#Optional helps save long term battery health
-       START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
-       STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-      };
-    };
-    
-  };
-
-  # Enable Window Manager
-  programs = {
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages."${pkgs.system}".hyprland;
-      # xwayland.enable = true;
-    };
   };
 
   # Security
   security = {
     rtkit.enable = true;
-    polkit.enable = true;
+    polkit = {
+      enable = true;
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (
+            subject.isInGroup("users")
+              && (
+                action.id == "org.freedesktop.login1.reboot" ||
+                action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+                action.id == "org.freedesktop.login1.power-off" ||
+                action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+              )
+            )
+          {
+            return polkit.Result.YES;
+          }
+        })
+      '';
+    };
   };
-  
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+
+  hardware = {
+    # OpenGL
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    # Bluetooth
+    #bluetooth = {
+    #  enable = true;
+    #  powerOnBoot = true;
+    #  settings = {
+    #    General = {
+    #      Enable = "Source,Sink,Media,Socket";
+    #      Experimental = true;
+    #    };
+    #  };
+    #};
   };
 
   # Fonts
@@ -176,7 +171,7 @@
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = [ "Meslo LG M Regular Nerd Font Complete Mono" ];
+        monospace = ["Meslo LG M Regular Nerd Font Complete Mono"];
       };
     };
     packages = with pkgs; [
@@ -187,28 +182,25 @@
       powerline-symbols
     ];
   };
-  
-  #virtualisation.docker.rootless = {
-    #enable = true;
-    #setSocketVariable = true;
-  #};
-  
+
   virtualisation.docker = {
-    enable = true;
+    enable = false;
   };
+
   # User account
   users.users.danny = {
     isNormalUser = true;
     description = "danny";
-    extraGroups = [ "docker" "networkmanager" "wheel" "disk" "power" "video" ];
+    extraGroups = ["docker" "networkmanager" "wheel" "disk" "power" "video"];
     packages = with pkgs; [
-    	devenv
+      devenv
+      kdePackages.kate
     ];
-    shell = pkgs.zsh;
+    shell = pkgs.nushell;
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users = {
       "danny" = import ./home.nix;
     };
@@ -221,23 +213,19 @@
       allowInsecure = true;
       allowUnsupportedSystem = true;
       PermittedInsecurePackages = [
-
       ];
     };
   };
 
   # Configure programs
   programs = {
-    # Shell
-    zsh.enable = true;
-
-    # Thunar 
-    thunar = {
+    # Hyprland
+    hyprland = {
       enable = true;
-      plugins = with pkgs.xfce; [
-        thunar-archive-plugin
-        thunar-volman
-      ];
+      # set the flake package
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
     # Programs that need SUID wrappers
@@ -246,38 +234,41 @@
       enable = true;
       enableSSHSupport = true;
     };
+
+    # KDE Connect
+    kdeconnect.enable = true;
+
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession.enable = true;
+    };
+
+    gamemode.enable = true;
+
+    nvf.enable = true;
   };
-  
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
-   vim
-   wget
-   cmake
-   # greetd.tuigreet
+    st
+    vim
+    wget
+    cmake
+    kdePackages.karousel
+    kdePackages.krohnkite
+
+    protonup
+    mangohud
+    heroic
   ];
-
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-  };
-
-  # KDE Connect
-  # kdeconnect.enable = true
 
   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
   #environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
-
-  # xdg
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-    #  xdg-desktop-portal-hyprland
-    ];
-    # wlr.enable = true;
-  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -291,6 +282,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
-
+  system.stateVersion = "24.11"; # Did you read the comment?
 }

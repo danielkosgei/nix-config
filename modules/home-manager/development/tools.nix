@@ -1,16 +1,18 @@
-{ pkgs, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   home.packages = with pkgs; [
-    php81
-    php81Packages.composer
-    nodePackages_latest.nodejs
-    (python312Full.withPackages(ps: with ps; [ pygobject3 gobject-introspection pyqt6-sip]))
-    # bun
+    #nodePackages_latest.nodejs
+    bun
     gcc
     gnumake
     license-generator
     inetutils
-    supabase-cli    
+    postgresql
+    supabase-cli
+    ngrok
+    python3
   ];
 }

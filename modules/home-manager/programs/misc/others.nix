@@ -1,25 +1,21 @@
-{ pkgs, lib, ... }:
-
 {
+  pkgs,
+  lib,
+  ...
+}: {
   home.packages = with pkgs; [
-    hyprpaper
-    grim
-    brightnessctl
-    zathura
     htop
     firefox
     qbittorrent
-    pavucontrol
-    pamixer
     ripgrep
-    xdg-utils
-    neofetch
-    htop
-    chromium
-    wofi
     vesktop
+    nitch
+    obsidian
+    libreoffice
+    signal-desktop
+    kdePackages.kdenlive
   ];
-  
+
   nixpkgs = {
     config = {
       allowUnfree = true;
