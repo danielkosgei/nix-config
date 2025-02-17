@@ -59,19 +59,37 @@
     };
   };
 
+  # Systemd stuff 
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "grpahical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   # Enable Networking
   networking = {
     hostName = "shadow";
     networkmanager.enable = true;
     firewall = rec {
       enable = true;
-      allowedTCPPorts = [ 80 443 ];
+      allowedTCPPorts = [ 3074 5223 8080 ];
       allowedTCPPortRanges = [
         {
           from = 1714;
           to = 1764;
         } # KDE Connect
       ];
+      allowedUDPPorts = [ 88 3074 3658 ];
       allowedUDPPortRanges = [
         {
           from = 1714;
@@ -128,22 +146,6 @@
     rtkit.enable = true;
     polkit = {
       enable = true;
-      extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          if (
-            subject.isInGroup("users")
-              && (
-                action.id == "org.freedesktop.login1.reboot" ||
-                action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-                action.id == "org.freedesktop.login1.power-off" ||
-                action.id == "org.freedesktop.login1.power-off-multiple-sessions"
-              )
-            )
-          {
-            return polkit.Result.YES;
-          }
-        })
-      '';
     };
   };
 
@@ -279,6 +281,14 @@
       protonup
       mangohud
       heroic
+    ];
+  };
+
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = with pkgs; [
+      #xdg-desktop-portal-hyprland
     ];
   };
 
