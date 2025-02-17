@@ -65,6 +65,7 @@
     networkmanager.enable = true;
     firewall = rec {
       enable = true;
+      allowedTCPPorts = [ 80 443 ];
       allowedTCPPortRanges = [
         {
           from = 1714;
@@ -154,16 +155,16 @@
     };
 
     # Bluetooth
-    #bluetooth = {
-    #  enable = true;
-    #  powerOnBoot = true;
-    #  settings = {
-    #    General = {
-    #      Enable = "Source,Sink,Media,Socket";
-    #      Experimental = true;
-    #    };
-    #  };
-    #};
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+          Experimental = true;
+        };
+      };
+    };
   };
 
   # Fonts
@@ -191,7 +192,7 @@
   users.users.danny = {
     isNormalUser = true;
     description = "danny";
-    extraGroups = ["docker" "networkmanager" "wheel" "disk" "power" "video"];
+    extraGroups = ["adb" "docker" "networkmanager" "wheel" "disk" "power" "video"];
     packages = with pkgs; [
       devenv
       kdePackages.kate
@@ -219,6 +220,7 @@
 
   # Configure programs
   programs = {
+    adb.enable = true;
     # Hyprland
     hyprland = {
       enable = true;
@@ -235,6 +237,16 @@
       enableSSHSupport = true;
     };
 
+    # Thunar
+    xfconf.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
+    };
+
     # KDE Connect
     kdeconnect.enable = true;
 
@@ -247,25 +259,28 @@
     };
 
     gamemode.enable = true;
-
-    nvf.enable = true;
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
-  environment.systemPackages = with pkgs; [
-    st
-    vim
-    wget
-    cmake
-    kdePackages.karousel
-    kdePackages.krohnkite
+  environment = {
+    sessionVariables = {
+      #NIXOS_OZONE_WL = "1";
+    };
+    systemPackages = with pkgs; [
+      st
+      vim
+      wget
+      cmake
+      kdePackages.karousel
+      kdePackages.krohnkite
 
-    protonup
-    mangohud
-    heroic
-  ];
+      protonup
+      mangohud
+      heroic
+    ];
+  };
 
   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
   #environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";

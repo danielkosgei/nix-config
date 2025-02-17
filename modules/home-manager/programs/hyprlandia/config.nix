@@ -6,7 +6,7 @@
       # autostart
       exec-once = [
         "waybar &"
-        # "hyprpaper &"
+        "hyprpaper &"
         # "discord &"
         
       ];
@@ -216,10 +216,10 @@
 
     extraConfig = "
       monitor=eDP-1,highres,0x0,1
-      monitor=HDMI-1,preferred,auto,1,mirror,eDP-1
+    #  monitor=HDMI-1,preferred,auto,1,mirror,eDP-1
 
       xwayland {
-        force_zero_scaling = true
+        force_zero_scaling = false
       }
     ";
   };

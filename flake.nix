@@ -13,7 +13,10 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
 
-    nvf.url = "github:notashelf/nvf";
+    nvchad4nix = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -26,9 +29,13 @@
     };
 
     nix-topology.url = "github:oddlama/nix-topology";
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nvf, nix-topology, ... } @ inputs: 
+  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs: 
   let
     host = "shadow";
     username = "danny";
@@ -40,13 +47,6 @@
     };
 
   in {
-    # Define your default packages, such as Neovim in this case
-    packages."x86_64-linux".default =
-      (nvf.lib.neovimConfiguration {
-        pkgs = pkgs.legacyPackages."x86_64-linux";
-        modules = [./modules/home-manager/development/nvf.nix];
-      })
-      .neovim;
 
     nixosConfigurations = {
       "${host}" = nixpkgs.lib.nixosSystem {
@@ -60,8 +60,16 @@
           inputs.home-manager.nixosModules.default
           inputs.dedsec-grub-theme.nixosModule
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490
-          inputs.nvf.nixosModules.default
           inputs.nix-topology.nixosModules.default  # Add the nix-topology NixOS module here
+          {
+            nixpkgs = {
+              overlays = [
+                (final: prev: {
+                  nvchad = inputs.nvchad4nix.packages."${pkgs.system}".nvchad;
+                 })
+              ];
+            };
+          }
         ];
       };
     };

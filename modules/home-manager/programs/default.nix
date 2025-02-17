@@ -4,6 +4,8 @@
     ./waybar
     ./wofi
     ./misc
+    ./mpv
+    ./zathura
 
   ];
 }

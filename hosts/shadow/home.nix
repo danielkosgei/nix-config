@@ -1,8 +1,14 @@
 {
   config,
   pkgs,
+  system,
+  inputs,
   ...
-}: {
+}: 
+let
+  system = "x86_64-linux";
+in 
+{
   imports = [
     ../../modules/home-manager/development
     ../../modules/home-manager/programs
@@ -13,7 +19,8 @@
 
   home.stateVersion = "24.11";
 
-  home.packages = [
+  home.packages = with pkgs; [
+    inputs.zen-browser.packages."${system}".twilight
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -30,6 +37,19 @@
 
     STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
   };
+
+  #wayland.windowManager.hyprland = {
+    # Whether to enable Hyprland wayland compositor
+  #  enable = true;
+    # The hyprland package to use
+  #  package = pkgs.hyprland;
+    # Whether to enable XWayland
+  #  xwayland.enable = true;
+
+    # Optional
+    # Whether to enable hyprland-session.target on hyprland startup
+    #systemd.enable = true;
+  #};
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

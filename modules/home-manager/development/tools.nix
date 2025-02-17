@@ -14,5 +14,6 @@
     supabase-cli
     ngrok
     python3
+    burpsuite
   ];
 }
