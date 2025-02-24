@@ -35,12 +35,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs: 
+  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs:
   let
     host = "shadow";
+    host2 = "reaper";
     username = "danny";
     system = "x86_64-linux";  # Define the system architecture here
-    # Define pkgs with the necessary overlay for nix-topology
+    # Define pkgs with the necessary overlays
     pkgs = import nixpkgs {
       inherit system;
       overlays = [nix-topology.overlays.default];
@@ -61,6 +62,27 @@
           inputs.dedsec-grub-theme.nixosModule
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490
           inputs.nix-topology.nixosModules.default  # Add the nix-topology NixOS module here
+          {
+            nixpkgs = {
+              overlays = [
+                (final: prev: {
+                  nvchad = inputs.nvchad4nix.packages."${pkgs.system}".nvchad;
+                 })
+              ];
+            };
+          }
+        ];
+      };
+      "${host2}" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit username;
+          inherit host2;
+        };
+        modules = [
+          ./hosts/${host2}/configuration.nix
+          inputs.home-manager.nixosModules.default 
+          inputs.dedsec-grub-theme.nixosModule 
           {
             nixpkgs = {
               overlays = [

@@ -4,7 +4,7 @@
     #./discord.nix
     ./git.nix
 #    ./ghostty.nix
-    #./gtk.nix
+ #   ./gtk.nix
     ./kitty.nix
     ./lf.nix
     #./mako.nix

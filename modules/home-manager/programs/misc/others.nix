@@ -9,11 +9,9 @@
     qbittorrent
     ripgrep
     vesktop
-    nitch
+    fastfetch
     obsidian
     libreoffice
-    signal-desktop
-    kdePackages.kdenlive
   ];
 
   nixpkgs = {

@@ -4,5 +4,8 @@
     android-studio
     jetbrains.idea-community
     qtcreator
+    vscode
+    zed-editor
+    neofetch
   ];
 }

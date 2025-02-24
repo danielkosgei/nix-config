@@ -36,6 +36,7 @@
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot";
       };
+      #systemd-boot.enable = true;
       grub = {
         dedsec-theme = {
           enable = true;
@@ -44,7 +45,7 @@
           resolution = "1080p";
         };
         enable = true;
-        devices = ["nodev"];
+        devices = ["/dev/nvme0n1"];
         efiSupport = true;
         useOSProber = true;
         extraEntries = ''
@@ -59,29 +60,12 @@
     };
   };
 
-  # Systemd stuff 
-  systemd = {
-    user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "grpahical-session.target" ];
-      after = [ "graphical-session.target" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
-  };
-
   # Enable Networking
   networking = {
     hostName = "shadow";
     networkmanager.enable = true;
     firewall = rec {
-      enable = true;
+      enable = false;
       allowedTCPPorts = [ 3074 5223 8080 ];
       allowedTCPPortRanges = [
         {
@@ -187,7 +171,7 @@
   };
 
   virtualisation.docker = {
-    enable = false;
+    enable = true;
   };
 
   # User account
