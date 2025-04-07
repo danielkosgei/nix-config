@@ -2,10 +2,7 @@
   home.packages = with pkgs; [
     neovim
     android-studio
-    jetbrains.idea-community
-    qtcreator
-    vscode
+    #jetbrains.idea-community
     zed-editor
-    neofetch
   ];
 }

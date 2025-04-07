@@ -11,7 +11,9 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+
+    #hyprland.url = "github:hyprwm/Hyprland";
 
     nvchad4nix = {
       url = "github:nix-community/nix4nvchad";
@@ -35,7 +37,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, nixos-cosmic, ... } @ inputs:
   let
     host = "shadow";
     host2 = "reaper";
@@ -82,8 +84,13 @@
         modules = [
           ./hosts/${host2}/configuration.nix
           inputs.home-manager.nixosModules.default 
-          inputs.dedsec-grub-theme.nixosModule 
+          inputs.dedsec-grub-theme.nixosModule
+          nixos-cosmic.nixosModules.default 
           {
+            nix.settings = {
+              substituters = [ "https://cosmic.cachix.org/" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+            };
             nixpkgs = {
               overlays = [
                 (final: prev: {

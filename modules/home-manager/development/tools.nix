@@ -15,5 +15,6 @@
     ngrok
     python3
     burpsuite
+    ripgrep
   ];
 }

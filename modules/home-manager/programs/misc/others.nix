@@ -5,7 +5,6 @@
 }: {
   home.packages = with pkgs; [
     htop
-    firefox
     qbittorrent
     ripgrep
     vesktop
