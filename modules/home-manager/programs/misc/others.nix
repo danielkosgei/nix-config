@@ -11,6 +11,8 @@
     fastfetch
     obsidian
     libreoffice
+    google-chrome
+    kodi-wayland
   ];
 
   nixpkgs = {

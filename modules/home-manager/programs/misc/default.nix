@@ -2,7 +2,7 @@
   imports = [
     ./bat.nix
     ./git.nix
-#    ./kitty.nix
+    ./kitty.nix
     ./lf.nix
     ./others.nix
     ./obsidian.nix

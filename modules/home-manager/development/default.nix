@@ -1,7 +1,7 @@
 {
   imports = [
     ./ides.nix
-    ./neovim.nix
+    #./neovim.nix
     ./tools.nix
     #./vscode.nix
   ];

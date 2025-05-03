@@ -14,7 +14,8 @@
     supabase-cli
     ngrok
     python3
-    burpsuite
     ripgrep
+    rustup
+    wasm-pack
   ];
 }

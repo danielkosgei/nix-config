@@ -34,18 +34,18 @@
       timeout = 3;
       efi = {
         canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot";
+        efiSysMountPoint = "/boot/efi";
       };
-      #systemd-boot.enable = true;
+    #  systemd-boot.enable = true;
       grub = {
         dedsec-theme = {
           enable = true;
-          style = "compact";
+          style = "reaper";
           icon = "color";
           resolution = "1080p";
         };
         enable = true;
-        devices = ["/dev/nvme0n1"];
+        devices = ["nodev"];
         efiSupport = true;
         useOSProber = true;
         extraEntries = ''
@@ -181,7 +181,6 @@
     extraGroups = ["adb" "docker" "networkmanager" "wheel" "disk" "power" "video"];
     packages = with pkgs; [
       devenv
-      kdePackages.kate
     ];
     shell = pkgs.nushell;
   };
@@ -207,14 +206,6 @@
   # Configure programs
   programs = {
     adb.enable = true;
-    # Hyprland
-    hyprland = {
-      enable = true;
-      # set the flake package
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      # make sure to also set the portal package, so that they are in sync
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    };
 
     # Programs that need SUID wrappers
     mtr.enable = true;
@@ -223,28 +214,6 @@
       enableSSHSupport = true;
     };
 
-    # Thunar
-    xfconf.enable = true;
-    thunar = {
-      enable = true;
-      plugins = with pkgs.xfce; [
-        thunar-archive-plugin
-        thunar-volman
-      ];
-    };
-
-    # KDE Connect
-    kdeconnect.enable = true;
-
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-      gamescopeSession.enable = true;
-    };
-
-    gamemode.enable = true;
   };
 
   # List packages installed in system profile. To search, run:
@@ -255,16 +224,9 @@
       #NIXOS_OZONE_WL = "1";
     };
     systemPackages = with pkgs; [
-      st
       vim
       wget
       cmake
-      kdePackages.karousel
-      kdePackages.krohnkite
-
-      protonup
-      mangohud
-      heroic
     ];
   };
 
@@ -272,7 +234,6 @@
     enable = true;
     xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
-      #xdg-desktop-portal-hyprland
     ];
   };
 

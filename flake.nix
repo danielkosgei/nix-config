@@ -11,15 +11,6 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-
-    #hyprland.url = "github:hyprwm/Hyprland";
-
-    nvchad4nix = {
-      url = "github:nix-community/nix4nvchad";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,7 +28,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, nixos-cosmic, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs:
   let
     host = "shadow";
     host2 = "reaper";
@@ -64,15 +55,6 @@
           inputs.dedsec-grub-theme.nixosModule
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490
           inputs.nix-topology.nixosModules.default  # Add the nix-topology NixOS module here
-          {
-            nixpkgs = {
-              overlays = [
-                (final: prev: {
-                  nvchad = inputs.nvchad4nix.packages."${pkgs.system}".nvchad;
-                 })
-              ];
-            };
-          }
         ];
       };
       "${host2}" = nixpkgs.lib.nixosSystem {
@@ -85,20 +67,6 @@
           ./hosts/${host2}/configuration.nix
           inputs.home-manager.nixosModules.default 
           inputs.dedsec-grub-theme.nixosModule
-          nixos-cosmic.nixosModules.default 
-          {
-            nix.settings = {
-              substituters = [ "https://cosmic.cachix.org/" ];
-              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-            };
-            nixpkgs = {
-              overlays = [
-                (final: prev: {
-                  nvchad = inputs.nvchad4nix.packages."${pkgs.system}".nvchad;
-                 })
-              ];
-            };
-          }
         ];
       };
     };
