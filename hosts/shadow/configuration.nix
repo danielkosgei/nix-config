@@ -125,6 +125,13 @@
     # openssh.enable = true;
   };
 
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    plasma-browser-integration
+    konsole
+    oxygen
+    kdepim-runtime
+  ];
+
   # Security
   security = {
     rtkit.enable = true;
@@ -170,10 +177,6 @@
     ];
   };
 
-  virtualisation.docker = {
-    enable = true;
-  };
-
   # User account
   users.users.danny = {
     isNormalUser = true;
@@ -182,7 +185,6 @@
     packages = with pkgs; [
       devenv
     ];
-    shell = pkgs.nushell;
   };
 
   home-manager = {
@@ -227,6 +229,7 @@
       vim
       wget
       cmake
+      kdePackages.sddm-kcm
     ];
   };
 

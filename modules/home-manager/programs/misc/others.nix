@@ -6,13 +6,9 @@
   home.packages = with pkgs; [
     htop
     qbittorrent
-    ripgrep
     vesktop
     fastfetch
     obsidian
-    libreoffice
-    google-chrome
-    kodi-wayland
   ];
 
   nixpkgs = {
