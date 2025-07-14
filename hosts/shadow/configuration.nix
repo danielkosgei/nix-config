@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
@@ -38,12 +37,12 @@
       };
     #  systemd-boot.enable = true;
       grub = {
-        dedsec-theme = {
-          enable = true;
-          style = "reaper";
-          icon = "color";
-          resolution = "1080p";
-        };
+        #dedsec-theme = {
+        #  enable = true;
+        #  style = "reaper";
+        #  icon = "color";
+        #  resolution = "1080p";
+        #};
         enable = true;
         devices = ["nodev"];
         efiSupport = true;
@@ -60,104 +59,48 @@
     };
   };
 
-  # Enable Networking
-  networking = {
-    hostName = "shadow";
-    networkmanager.enable = true;
-    firewall = rec {
-      enable = false;
-      allowedTCPPorts = [ 3074 5223 8080 ];
-      allowedTCPPortRanges = [
-        {
-          from = 1714;
-          to = 1764;
-        } # KDE Connect
-      ];
-      allowedUDPPorts = [ 88 3074 3658 ];
-      allowedUDPPortRanges = [
-        {
-          from = 1714;
-          to = 1764;
-        } # KDE Connect
-      ];
-    };
-  };
+  # Bootloader
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
 
-  # Set your time zone.
+  networking.hostName = "shadow";
+  networking.networkmanager.enable = true;
+
+  # Time zone
   time.timeZone = "Africa/Nairobi";
 
-  # Select internationalisation properties.
+  # Internationalization
   i18n.defaultLocale = "en_GB.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "us";
+
+  # Enable hardware graphics acceleration
+  hardware.graphics.enable = true;
+
+  # Enable bluetooth
+  # hardware.bluetooth.enable = true;
+  # services.blueman.enable = true;
+
+  services.displayManager.cosmic-greeter.enable = true;
+  services.desktopManager.cosmic.enable = true;
+  # Enable the X11 windowing system
+  #services.xserver.enable = true;
+
+  # Enable Intel iGPU support
+  #services.xserver.videoDrivers = ["modesetting"];
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
   };
 
-  # Services
-  services = {
-    xserver = {
-      enable = true;
-      videoDrivers = ["modesetting" "fbdev"];
-    };
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
-
-    # Sound with pipewire
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-    };
-
-    # bluetooth
-    #   blueman.enable = true;
-
-    # Printing
-    # printing.enable = true;
-
-    # SSD
-    fstrim.enable = true;
-
-    # OpenSSH daemon
-    # openssh.enable = true;
-  };
-
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration
-    konsole
-    oxygen
-    kdepim-runtime
-  ];
-
-  # Security
-  security = {
-    rtkit.enable = true;
-    polkit = {
-      enable = true;
-    };
-  };
-
-  hardware = {
-    # OpenGL
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-    };
-
-    # Bluetooth
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
+  # Enable sound with pipewire
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
   # Fonts
@@ -177,83 +120,30 @@
     ];
   };
 
-  # User account
+  # Define a user account
   users.users.danny = {
     isNormalUser = true;
     description = "danny";
-    extraGroups = ["adb" "docker" "networkmanager" "wheel" "disk" "power" "video"];
-    packages = with pkgs; [
-      devenv
-    ];
+    extraGroups = ["networkmanager" "wheel"];
+    shell = pkgs.fish;
   };
 
-  home-manager = {
-    extraSpecialArgs = {inherit inputs;};
-    users = {
-      "danny" = import ./home.nix;
-    };
-  };
+  # Enable fish shell system-wide
+  programs.fish.enable = true;
 
-  # Allow unfree packages and insecure packages
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowInsecure = true;
-      allowUnsupportedSystem = true;
-      PermittedInsecurePackages = [
-      ];
-    };
-  };
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
-  # Configure programs
-  programs = {
-    adb.enable = true;
+  # System packages
+  environment.systemPackages = with pkgs; [
+    wget
+    vim
+    fish
+    kdePackages.kdenlive
+  ];
 
-    # Programs that need SUID wrappers
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
+  # SSD
+  services.fstrim.enable = true;
 
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-
-  environment = {
-    sessionVariables = {
-      #NIXOS_OZONE_WL = "1";
-    };
-    systemPackages = with pkgs; [
-      vim
-      wget
-      cmake
-      kdePackages.sddm-kcm
-    ];
-  };
-
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-    ];
-  };
-
-  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  #environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05";
 }
