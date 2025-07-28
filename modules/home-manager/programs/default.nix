@@ -1,0 +1,8 @@
+{
+  imports = [
+    ./misc
+    ./mpv
+    ./zathura
+
+  ];
+}

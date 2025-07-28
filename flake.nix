@@ -1,47 +1,83 @@
 {
-  description = "My NixOS configuration";
+  description = "My Flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dedsec-grub-theme = {
+      url = "gitlab:VandalByte/dedsec-grub-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-topology.url = "github:oddlama/nix-topology";
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+    };
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    home-manager,
-    ...
-  }: {
+  outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs:
+  let
+    host = "shadow";
+    host2 = "reaper";
+    username = "danny";
+    system = "x86_64-linux";  # Define the system architecture here
+    # Define pkgs with the necessary overlays
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [nix-topology.overlays.default];
+    };
+
+  in {
+
     nixosConfigurations = {
-      shadow = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
+      "${host}" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+           inherit inputs;
+           inherit username;
+           inherit host;
+        };
         modules = [
-          ./hosts/shadow/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {inherit inputs;};
-            home-manager.users.danny = import ./home/danny/home.nix;
-            home-manager.backupFileExtension = "backup";
-          }
+          ./hosts/${host}/configuration.nix
+          inputs.home-manager.nixosModules.default
+          inputs.dedsec-grub-theme.nixosModule
+          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490
+          inputs.nix-topology.nixosModules.default  # Add the nix-topology NixOS module here
         ];
       };
+      "${host2}" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit username;
+          inherit host2;
+        };
+        modules = [
+          ./hosts/${host2}/configuration.nix
+          inputs.home-manager.nixosModules.default 
+          inputs.dedsec-grub-theme.nixosModule
+        ];
+      };
+    };
+
+    # Define topology output for the system
+    topology.x86_64-linux = import nix-topology {
+      inherit pkgs;  # Make sure pkgs includes the nix-topology overlay
+      modules = [
+        ./topology.nix  # Define your custom global topology configuration
+        { nixosConfigurations = self.nixosConfigurations; }  # Use existing NixOS configurations
+      ];
     };
   };
 }
