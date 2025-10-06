@@ -101,9 +101,9 @@
       enable = true;
       windowManager.dwm = {
         enable = true;
-        package = pkgs.dwm.overrideAttrs {
+        package = pkgs.dwm.overrideAttrs (oldAttrs: {
           src = ./config/dwm;
-        };
+        });
       };
       videoDrivers = ["modesetting" "fbdev"];
     };
