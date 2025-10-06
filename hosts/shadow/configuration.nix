@@ -28,7 +28,7 @@
   # Bootloader and Filesystems
   boot = {
     # Kernel
-    kernelPackages = pkgs.linuxPackages_zen;
+    # kernelPackages = pkgs.linuxPackages_zen;
     supportedFilesystems = ["ntfs" "exfat" "mtpfs"];
     loader = {
       timeout = 3;
@@ -97,10 +97,15 @@
   services = {
     xserver = {
       enable = true;
+      windowManager.dwm = {
+        enable = true;
+        package = pkgs.dwm.overrideAttrs {
+          src = ./config/dwm;
+        };
+      };
       videoDrivers = ["modesetting" "fbdev"];
     };
-    displayManager.sddm.enable = true;
-    desktopManager.plasma6.enable = true;
+    displayManager.ly.enable = true;    
 
     # Sound with pipewire
     pipewire = {
@@ -125,12 +130,12 @@
     # openssh.enable = true;
   };
 
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    plasma-browser-integration
-    konsole
-    oxygen
-    kdepim-runtime
-  ];
+  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #   plasma-browser-integration
+  #   konsole
+  #   oxygen
+  #   kdepim-runtime
+  # ];
 
   # Security
   security = {
@@ -184,6 +189,7 @@
     extraGroups = ["adb" "docker" "libvirtd" "kvm" "networkmanager" "wheel" "disk" "power" "video"];
     packages = with pkgs; [
       devenv
+      alacritty
     ];
   };
 
@@ -243,16 +249,16 @@
       vim
       wget
       cmake
-      kdePackages.sddm-kcm
+     #  kdePackages.sddm-kcm
     ];
   };
 
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-    ];
-  };
+  #xdg.portal = {
+  #  enable = true;
+  #  xdgOpenUsePortal = true;
+  #  extraPortals = with pkgs; [
+  #  ];
+  #};
 
   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
   #environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
