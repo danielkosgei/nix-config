@@ -93,6 +93,8 @@
     keyMap = "us";
   };
 
+  programs.firefox.enable = true;
+
   # Services
   services = {
     xserver = {
@@ -190,6 +192,8 @@
     packages = with pkgs; [
       devenv
       alacritty
+      tree
+      git
     ];
   };
 
