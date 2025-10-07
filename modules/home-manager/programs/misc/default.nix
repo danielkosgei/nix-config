@@ -6,7 +6,7 @@
     ./lf.nix
     ./others.nix
     ./obsidian.nix
-#    ./nushell.nix
+    ./nushell.nix
     ./spotify.nix
   ];
 }
