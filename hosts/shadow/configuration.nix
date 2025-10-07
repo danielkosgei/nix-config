@@ -99,12 +99,6 @@
   services = {
     xserver = {
       enable = true;
-      windowManager.dwm = {
-        enable = true;
-        package = pkgs.dwm.overrideAttrs (oldAttrs: {
-          src = ./config/dwm;
-        });
-      };
       videoDrivers = ["modesetting" "fbdev"];
     };
     displayManager.ly.enable = true;    
