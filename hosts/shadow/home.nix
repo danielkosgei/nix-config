@@ -18,12 +18,12 @@ in
 
   home.packages = [
     inputs.zen-browser.packages."${system}".beta
+    inputs.gitfetch.packages.${system}.default
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = {
-  };
+  home.file = { };
 
   home.sessionVariables = {
     EDITOR = "vim";

@@ -26,6 +26,11 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
     };
+
+    gitfetch = {
+      url = "github:Matars/gitfetch";
+    };
+
   };
 
   outputs = { self, nixpkgs, nixos-hardware, nix-topology, zen-browser, ... } @ inputs:
