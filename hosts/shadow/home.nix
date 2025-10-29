@@ -19,6 +19,7 @@ in
   home.packages = [
     inputs.zen-browser.packages."${system}".beta
     inputs.gitfetch.packages.${system}.default
+    #inputs.cursor.packages.${pkgs.system}.default
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
