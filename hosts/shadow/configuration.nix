@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
+{ config
+, pkgs
+, inputs
+, ...
 }: {
   imports = [
     # Include the results of the hardware scan.
@@ -15,7 +14,7 @@
       trusted-users = root danny
     '';
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
     };
     gc = {
@@ -27,15 +26,21 @@
 
   # Bootloader and Filesystems
   boot = {
+    extraModulePackages = with config.boot.kernelPackages; [
+      v4l2loopback
+    ];
+    extraModprobeConfig = ''
+      options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    '';
     # Kernel
-    supportedFilesystems = ["ntfs" "exfat" "mtpfs"];
+    supportedFilesystems = [ "ntfs" "exfat" "mtpfs" ];
     loader = {
       timeout = 3;
       efi = {
         canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi";
       };
-    #  systemd-boot.enable = true;
+      #  systemd-boot.enable = true;
       grub = {
         dedsec-theme = {
           enable = true;
@@ -44,7 +49,7 @@
           resolution = "1080p";
         };
         enable = true;
-        devices = ["nodev"];
+        devices = [ "nodev" ];
         efiSupport = true;
         useOSProber = true;
         extraEntries = ''
@@ -96,10 +101,10 @@
   services = {
     xserver = {
       enable = true;
-      videoDrivers = ["modesetting" "fbdev"];
+      videoDrivers = [ "modesetting" "fbdev" ];
     };
-    displayManager.ly.enable = true;    
-    desktopManager.plasma6.enable = true;    
+    displayManager.ly.enable = true;
+    desktopManager.plasma6.enable = true;
 
     # Sound with pipewire
     pipewire = {
@@ -164,7 +169,7 @@
     fontconfig = {
       enable = true;
       defaultFonts = {
-        monospace = ["Meslo LG M Regular Nerd Font Complete Mono"];
+        monospace = [ "Meslo LG M Regular Nerd Font Complete Mono" ];
       };
     };
     packages = with pkgs; [
@@ -180,14 +185,14 @@
   users.users.danny = {
     isNormalUser = true;
     description = "danny";
-    extraGroups = ["adb" "docker" "libvirtd" "kvm" "networkmanager" "wheel" "disk" "power" "video"];
+    extraGroups = [ "adb" "docker" "libvirtd" "kvm" "networkmanager" "wheel" "disk" "power" "video" ];
     packages = with pkgs; [
       devenv
       tree
     ];
   };
 
-  users.groups.libvirtd.members = ["danny"];
+  users.groups.libvirtd.members = [ "danny" ];
 
   virtualisation = {
     docker.rootless = {
@@ -202,7 +207,7 @@
   programs.virt-manager.enable = true;
 
   home-manager = {
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = { inherit inputs; };
     users = {
       "danny" = import ./home.nix;
     };

@@ -7,6 +7,7 @@
     ./others.nix
     ./obsidian.nix
     ./nushell.nix
+    ./obs-studio.nix
     ./spotify.nix
   ];
 }

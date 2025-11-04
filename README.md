@@ -27,8 +27,8 @@ This repository contains a flake-based NixOS setup with integrated Home Manager.
 
 ## Flake outputs
 
-- `nixosConfigurations.shadow`: Main laptop/desktop configuration (ThinkPad T490 hardware module).
-- `nixosConfigurations.reaper`: Secondary host configuration.
+- `nixosConfigurations.shadow`: Main laptop configuration (ThinkPad T490 hardware module).
+- `nixosConfigurations.reaper`: PC configuration.
 - `topology.x86_64-linux`: Topology output generated from `topology.nix` and hosts.
 
 ## Quickstart
