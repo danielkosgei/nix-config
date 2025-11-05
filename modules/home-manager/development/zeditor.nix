@@ -6,9 +6,6 @@
     # Nix
     nil
 
-    # Rust
-    rust-analyzer
-
     # JavaScript/TypeScript/Node
     nodejs
     nodePackages.typescript-language-server
@@ -16,10 +13,10 @@
 
     # Go
     gopls
-    delve # Go debugger
 
     # PHP/Laravel
     nodePackages.intelephense
+    php83Packages.php-cs-fixer
 
     # Python
     pyright
@@ -39,15 +36,21 @@
     # Kotlin
     kotlin-language-server
 
+    # TOML
+    taplo
+
     # Shell scripts
     nodePackages.bash-language-server
+
+    # Rust (optional)
+    rust-analyzer
+    rustfmt
 
     # Formatters
     nixpkgs-fmt # Nix formatter
     nodePackages.prettier # JS/TS/JSON/YAML/Markdown
     black # Python formatter
     gofumpt # Go formatter
-    phpactor # PHP tools
   ];
 
   programs.zed-editor = {
@@ -74,9 +77,17 @@
         version = "2";
         default_model = {
           provider = "zed.dev";
-          model = "claude-sonnet-4";
+          model = "claude-sonnet-4.5";
         };
       };
+
+      # Completion settcommitings (tone down auto-completion)
+      show_completions_on_input = true; # Still show completion menu
+      # But make it less aggressive:
+      completion_documentation_secondary_delay = 300; # Delay showing docs
+
+      # If you want to disable LSP-based completions entirely (not recommended):
+      # use_language_server = false;
 
       # Node configuration
       node = {
@@ -91,11 +102,20 @@
       base_keymap = "VSCode";
 
       # Autosave settings
-      autosave = "on_focus_change"; # or "on_window_change" or "after_delay"
-      autosave_delay = 1000; # milliseconds (if using after_delay)
+      autosave = "on_focus_change";
+      autosave_delay = 1000;
 
       # Format on save
       format_on_save = "on";
+
+      # Inline completion settings (reduce autocomplete aggressiveness)
+      show_inline_completions = false; # Disable inline completions entirely
+
+      # Alternative: if you want some completions but less aggressive
+      # show_inline_completions = true;
+      # inline_completions = {
+      #   disabled_globs = [ ".env" ];
+      # };
 
       # Theme
       theme = {
@@ -133,13 +153,6 @@
       lsp = {
         # Nix
         nil = {
-          binary = {
-            path_lookup = true;
-          };
-        };
-
-        # Rust
-        rust-analyzer = {
           binary = {
             path_lookup = true;
           };
@@ -187,6 +200,13 @@
           };
         };
 
+        # TOML
+        taplo = {
+          binary = {
+            path_lookup = true;
+          };
+        };
+
         # Docker
         dockerfile-language-server = {
           binary = {
@@ -215,8 +235,27 @@
           };
         };
 
+        # Rust
+        rust-analyzer = {
+          binary = {
+            path_lookup = true;
+          };
+        };
+
         # HTML/CSS/JSON (from vscode-langservers-extracted)
         vscode-json-language-server = {
+          binary = {
+            path_lookup = true;
+          };
+        };
+
+        vscode-css-language-server = {
+          binary = {
+            path_lookup = true;
+          };
+        };
+
+        vscode-html-language-server = {
           binary = {
             path_lookup = true;
           };
@@ -272,6 +311,18 @@
           };
         };
 
+        "JSX" = {
+          language_servers = [ "typescript-language-server" ];
+          tab_size = 2;
+          format_on_save = "on";
+          formatter = {
+            external = {
+              command = "prettier";
+              arguments = [ "--stdin-filepath" "{buffer_path}" ];
+            };
+          };
+        };
+
         "Go" = {
           language_servers = [ "gopls" ];
           tab_size = 4;
@@ -287,6 +338,12 @@
           language_servers = [ "intelephense" ];
           tab_size = 4;
           format_on_save = "on";
+          formatter = {
+            external = {
+              command = "php-cs-fixer";
+              arguments = [ "fix" "--using-cache=no" "$FILENAME" ];
+            };
+          };
         };
 
         "Python" = {
@@ -301,6 +358,12 @@
           };
         };
 
+        "Rust" = {
+          language_servers = [ "rust-analyzer" ];
+          tab_size = 4;
+          format_on_save = "on";
+        };
+
         "Markdown" = {
           language_servers = [ "marksman" ];
           tab_size = 2;
@@ -311,6 +374,12 @@
           language_servers = [ "yaml-language-server" ];
           tab_size = 2;
           format_on_save = "on";
+          formatter = {
+            external = {
+              command = "prettier";
+              arguments = [ "--stdin-filepath" "{buffer_path}" ];
+            };
+          };
         };
 
         "Dockerfile" = {
@@ -326,6 +395,54 @@
         "Kotlin" = {
           language_servers = [ "kotlin-language-server" ];
           tab_size = 4;
+        };
+
+        "HTML" = {
+          language_servers = [ "vscode-html-language-server" ];
+          tab_size = 2;
+          format_on_save = "on";
+          formatter = {
+            external = {
+              command = "prettier";
+              arguments = [ "--stdin-filepath" "{buffer_path}" ];
+            };
+          };
+        };
+
+        "CSS" = {
+          language_servers = [ "vscode-css-language-server" ];
+          tab_size = 2;
+          format_on_save = "on";
+          formatter = {
+            external = {
+              command = "prettier";
+              arguments = [ "--stdin-filepath" "{buffer_path}" ];
+            };
+          };
+        };
+
+        "JSON" = {
+          language_servers = [ "vscode-json-language-server" ];
+          tab_size = 2;
+          format_on_save = "on";
+          formatter = {
+            external = {
+              command = "prettier";
+              arguments = [ "--stdin-filepath" "{buffer_path}" ];
+            };
+          };
+        };
+
+        "Shell Script" = {
+          language_servers = [ "bash-language-server" ];
+          tab_size = 2;
+          format_on_save = "on";
+        };
+
+        "TOML" = {
+          language_servers = [ "taplo" ];
+          tab_size = 2;
+          format_on_save = "on";
         };
       };
 
