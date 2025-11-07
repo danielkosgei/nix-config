@@ -42,6 +42,9 @@
     # Shell scripts
     nodePackages.bash-language-server
 
+    # Makefile
+    # Note: No dedicated LSP for Makefiles, but syntax highlighting works
+
     # Rust (optional)
     rust-analyzer
     rustfmt
@@ -67,6 +70,7 @@
       "kotlin"
       "php"
       "prisma"
+      "make"
     ];
 
     ## Zed editor settings
@@ -77,11 +81,11 @@
         version = "2";
         default_model = {
           provider = "zed.dev";
-          model = "claude-sonnet-4.5";
+          model = "claude-sonnet-4";
         };
       };
 
-      # Completion settcommitings (tone down auto-completion)
+      # Completion settings (tone down auto-completion)
       show_completions_on_input = true; # Still show completion menu
       # But make it less aggressive:
       completion_documentation_secondary_delay = 300; # Delay showing docs
@@ -444,6 +448,11 @@
           tab_size = 2;
           format_on_save = "on";
         };
+
+        "Makefile" = {
+          tab_size = 4;
+          hard_tabs = true; # Makefiles REQUIRE tabs, not spaces
+        };
       };
 
       # Load direnv for per-project environments
@@ -453,6 +462,7 @@
       file_types = {
         "Dockerfile" = [ "Dockerfile*" ];
         "ENV" = [ ".env" ".env.*" ];
+        "Makefile" = [ "Makefile" "makefile" "*.mk" "GNUmakefile" ];
       };
     };
   };
