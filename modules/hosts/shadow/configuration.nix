@@ -18,6 +18,7 @@
         self.nixosModules.apps
         self.nixosModules.development
         self.nixosModules.git
+        self.nixosModules.lf
         self.nixosModules.spicetify
         inputs.dedsec-grub-theme.nixosModule
       ];

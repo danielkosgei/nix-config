@@ -99,12 +99,12 @@
         # ── Binds ───────────────────────────────────────────────────────────
         binds = {
           # Apps
-          "Mod+Return".spawn-sh = lib.getExe pkgs.alacritty;
+          "Mod+Return".spawn-sh = lib.getExe pkgs.kitty;
           "Mod+Q".close-window = null;
           "Mod+S".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
           "Mod+L".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call lockScreen lock";
-          "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
-          "Mod+E".spawn-sh = lib.getExe pkgs.nautilus;
+          "Mod+B".spawn-sh = "zen";
+          "Mod+E".spawn-sh = "${lib.getExe pkgs.kitty} -e ${lib.getExe pkgs.lf}";
 
           # Focus
           "Mod+H".focus-column-left = null;

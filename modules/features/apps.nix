@@ -4,11 +4,9 @@
       mpv
       zathura
       lf
-      transmission_4-gtk
       vesktop
       fastfetch
       obsidian
-      nautilus
       spotify
     ];
   };
