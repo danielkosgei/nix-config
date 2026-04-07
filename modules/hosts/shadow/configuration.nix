@@ -107,6 +107,15 @@
         fstrim.enable = true;
       };
 
+      systemd.user.services.udiskie = {
+        description = "Automount removable media (udiskie)";
+        wantedBy = [ "default.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.udiskie}/bin/udiskie";
+          Restart = "on-failure";
+        };
+      };
+
       security = {
         rtkit.enable = true;
         polkit.enable = true;

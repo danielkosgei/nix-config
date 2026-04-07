@@ -1,74 +1,33 @@
 set shell sh
-  set
-  hidden
-  true
-  set
-  icons
-  true
-  set
-  drawbox
-  true
-  set
-  preview
-  true
-  set
-  cleaner /etc/lf/clean.sh
-  set
-  previewer /etc/lf/preview.sh
-  set
-  sixel
-  false
-  set
-  scrolloff 6
-  set
-  dircounts
-  true
-  set
-  number
-  false
-  set
-  relativenumber
-  false
-  set
-  info size:time
-  set
-  tabstop 2
-  set
-  truncatechar "~"
-  set
-  incsearch
-  true
-  set
-  ignorecase
-  true
-  set
-  smartcase
-  true
-  set
-  globsearch
-  true
-  set
-  wrapscan
-  true
-  set
-  anchorfind
-  true
-  set
-  findlen 1
-  set
-  period 0
-  set
-  locale
-  C
-  set
-  preserve
-  true
-  set
-  ratios 1:2:4
+set hidden true
+set icons true
+set drawbox true
+set preview true
+set cleaner /etc/lf/clean.sh
+set previewer /etc/lf/preview.sh
+set sixel false
+set scrolloff 6
+set dircounts true
+set number false
+set relativenumber false
+set info size:time
+set tabstop 2
+set truncatechar "~"
+set incsearch true
+set ignorecase true
+set smartcase true
+set globsearch true
+set wrapscan true
+set anchorfind true
+set findlen 1
+set period 0
+set locale C
+set preserve true
+set ratios 1:2:4
 
 cmd open ${{
-case "$(file -Lb --mime-type -- "$f")" in
-text/*|application/json|application/javascript|application/xml) ${EDITOR:-nvim} "$f" ;;
+  case "$(file -Lb --mime-type -- "$f")" in
+    text/*|application/json|application/javascript|application/xml) ${EDITOR:-nvim} "$f" ;;
     inode/directory) lf "$f" ;;
     image/*|video/*|audio/*|application/pdf) xdg-open "$f" >/dev/null 2>&1 ;;
     *) xdg-open "$f" >/dev/null 2>&1 ;;
@@ -128,6 +87,7 @@ map gd cd ~/Downloads
 map gp cd ~/Pictures
 map gv cd ~/Videos
 map gt cd ~/.local/share/Trash/files
+map gM cd '/run/media/dd0n3'
 map m mkdir
 map n mkfile
 map x extract
@@ -148,9 +108,6 @@ map zs togglesort
 map / search
 map ? search-back
 map N search-next
-map n search-prev
+map <c-p> search-prev
 map <c-l> redraw
 map <c-r> reload
-
-
-

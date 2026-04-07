@@ -9,6 +9,8 @@
       jq
       unzip
       atool
+      p7zip
+      unrar
       poppler-utils
       ffmpegthumbnailer
       chafa
@@ -18,7 +20,8 @@
 
     environment.sessionVariables.LF_CONFIG_HOME = "/etc/lf";
 
-    environment.etc."lf/lfrc".source = ./lf/lfrc;
+    # builtins.readFile avoids nixpkgs-fmt corrupting this file (it splits `set` lines).
+    environment.etc."lf/lfrc".text = builtins.readFile ./lf/lfrc;
     environment.etc."lf/preview.sh".source = ./lf/preview.sh;
     environment.etc."lf/preview.sh".mode = "0755";
     environment.etc."lf/clean.sh".source = ./lf/clean.sh;

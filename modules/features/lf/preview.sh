@@ -59,3 +59,4 @@ pistol "$file" 2>/dev/null | sed -n '1,200p'
 exit 1
 
 
+
