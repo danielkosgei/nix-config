@@ -7,7 +7,7 @@
           name = "Daniel Kosgei";
           email = "dannykosgei@gmail.com";
         };
-        init.defaultBranch = "main";
+        init.defaultBranch = "master";
         credential.helper = "store";
       };
     };
