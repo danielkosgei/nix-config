@@ -162,7 +162,20 @@
           enable = true;
           enableSSHSupport = true;
         };
-        dconf.enable = true;
+        # GTK/Wayland apps often read cursor from gsettings, not only XCURSOR_* / gtk settings.ini.
+        dconf = {
+          enable = true;
+          profiles.user.databases = [
+            {
+              settings = {
+                "org/gnome/desktop/interface" = {
+                  cursor-theme = "Bibata-Modern-Classic";
+                  cursor-size = lib.gvariant.mkUint32 24;
+                };
+              };
+            }
+          ];
+        };
       };
 
       environment.systemPackages = with pkgs; [
@@ -209,7 +222,9 @@
       xdg.portal = {
         enable = true;
         xdgOpenUsePortal = true;
-        extraPortals = with pkgs; [ ];
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+        ];
       };
       xdg.mime = {
         enable = true;

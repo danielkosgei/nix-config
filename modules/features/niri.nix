@@ -30,6 +30,12 @@
           skip-at-startup = null;
         };
 
+        # Compositor / root pointer (env alone is not always enough on niri)
+        cursor = {
+          xcursor-theme = "Bibata-Modern-Classic";
+          xcursor-size = 24;
+        };
+
         spawn-at-startup = [
           (lib.getExe self'.packages.myNoctalia)
         ];
