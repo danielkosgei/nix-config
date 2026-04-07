@@ -2,7 +2,6 @@
   flake.nixosModules.development = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       code-cursor-fhs
-      vscode
       nodePackages_latest.nodejs
       bun
       gcc

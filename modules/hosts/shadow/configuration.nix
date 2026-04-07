@@ -222,6 +222,24 @@
           "video/mpeg" = [ "mpv.desktop" ];
           "video/ogg" = [ "mpv.desktop" ];
         };
+        addedAssociations = {
+          "video/mp4" = [ "mpv.desktop" ];
+          "video/x-matroska" = [ "mpv.desktop" ];
+          "video/webm" = [ "mpv.desktop" ];
+          "video/quicktime" = [ "mpv.desktop" ];
+          "video/x-msvideo" = [ "mpv.desktop" ];
+          "video/mpeg" = [ "mpv.desktop" ];
+          "video/ogg" = [ "mpv.desktop" ];
+        };
+        removedAssociations = {
+          "video/mp4" = [ "umpv.desktop" ];
+          "video/x-matroska" = [ "umpv.desktop" ];
+          "video/webm" = [ "umpv.desktop" ];
+          "video/quicktime" = [ "umpv.desktop" ];
+          "video/x-msvideo" = [ "umpv.desktop" ];
+          "video/mpeg" = [ "umpv.desktop" ];
+          "video/ogg" = [ "umpv.desktop" ];
+        };
       };
 
       nixpkgs.config.allowUnfree = true;

@@ -4,9 +4,7 @@
       mpv
       zathura
       lf
-      vesktop
       fastfetch
-      obsidian
       spotify
     ];
   };
