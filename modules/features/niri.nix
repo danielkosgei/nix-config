@@ -20,6 +20,8 @@
         CLUTTER_BACKEND = "wayland";
         XDG_SESSION_TYPE = "wayland";
         XDG_CURRENT_DESKTOP = "niri";
+        XCURSOR_THEME = "Bibata-Modern-Classic";
+        XCURSOR_SIZE = "24";
       };
 
       settings = {

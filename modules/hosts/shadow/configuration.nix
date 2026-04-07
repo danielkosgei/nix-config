@@ -15,6 +15,7 @@
       imports = [
         self.nixosModules.shadowHardware
         self.nixosModules.niri
+        self.nixosModules.kitty
         self.nixosModules.apps
         self.nixosModules.development
         self.nixosModules.git
@@ -123,7 +124,7 @@
         fontconfig = {
           enable = true;
           defaultFonts = {
-            monospace = [ "Meslo LG M Regular Nerd Font Complete Mono" ];
+            monospace = [ "JetBrainsMono Nerd Font Mono" ];
           };
         };
         packages = with pkgs; [
