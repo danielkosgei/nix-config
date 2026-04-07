@@ -20,6 +20,8 @@
         self.nixosModules.development
         self.nixosModules.git
         self.nixosModules.lf
+        self.nixosModules.zathura
+        self.nixosModules.neovim
         self.nixosModules.spicetify
         inputs.dedsec-grub-theme.nixosModule
       ];

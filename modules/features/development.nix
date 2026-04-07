@@ -17,7 +17,6 @@
       rustup
       wasm-pack
       go
-      neovim
     ];
   };
 }

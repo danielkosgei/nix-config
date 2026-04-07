@@ -55,7 +55,7 @@
           };
           touchpad = {
             tap = null;
-            natural-scroll = null;
+            # Omit natural-scroll so two-finger scroll is traditional (flag absent = off).
             accel-speed = 0.2;
           };
           mouse = {
