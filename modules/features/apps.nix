@@ -4,11 +4,11 @@
       mpv
       zathura
       lf
-      qbittorrent
+      transmission_4-gtk
       vesktop
       fastfetch
       obsidian
-      pcmanfm
+      nautilus
       spotify
     ];
   };

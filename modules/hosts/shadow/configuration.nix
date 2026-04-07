@@ -7,7 +7,7 @@
         {
           extraPrefs = ''
             lockPref("layout.css.prefers-color-scheme.content-override", 0);
-            lockPref("ui.systemUsesDarkTheme", 2);
+            lockPref("ui.systemUsesDarkTheme", 1);
           '';
         };
     in

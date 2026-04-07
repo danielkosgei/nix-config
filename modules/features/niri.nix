@@ -104,6 +104,7 @@
           "Mod+S".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
           "Mod+L".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call lockScreen lock";
           "Mod+B".spawn-sh = lib.getExe inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          "Mod+E".spawn-sh = lib.getExe pkgs.nautilus;
 
           # Focus
           "Mod+H".focus-column-left = null;

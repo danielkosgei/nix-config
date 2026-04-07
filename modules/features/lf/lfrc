@@ -1,0 +1,155 @@
+set shell sh
+  set
+  hidden
+  true
+  set
+  icons
+  true
+  set
+  drawbox
+  true
+  set
+  preview
+  true
+  set
+  cleaner /etc/lf/clean.sh
+  set
+  previewer /etc/lf/preview.sh
+  set
+  sixel
+  false
+  set
+  scrolloff 6
+  set
+  dircounts
+  true
+  set
+  number
+  false
+  set
+  relativenumber
+  false
+  set
+  info size:time
+  set
+  tabstop 2
+  set
+  truncatechar "~"
+  set
+  incsearch
+  true
+  set
+  ignorecase
+  true
+  set
+  smartcase
+  true
+  set
+  globsearch
+  true
+  set
+  wrapscan
+  true
+  set
+  anchorfind
+  true
+  set
+  findlen 1
+  set
+  period 0
+  set
+  locale
+  C
+  set
+  preserve
+  true
+  set
+  ratios 1:2:4
+
+cmd open ${{
+case "$(file -Lb --mime-type -- "$f")" in
+text/*|application/json|application/javascript|application/xml) ${EDITOR:-nvim} "$f" ;;
+    inode/directory) lf "$f" ;;
+    image/*|video/*|audio/*|application/pdf) xdg-open "$f" >/dev/null 2>&1 ;;
+    *) xdg-open "$f" >/dev/null 2>&1 ;;
+  esac
+}}
+
+cmd mkdir ${{
+  printf "Directory name: "
+  read -r dir
+  [ -n "$dir" ] && mkdir -p -- "$dir"
+}}
+
+cmd mkfile ${{
+  printf "File name: "
+  read -r file
+  [ -n "$file" ] && touch -- "$file"
+}}
+
+cmd extract ${{
+  set -f
+  case "$f" in
+    *.tar.bz2|*.tbz2) tar xvjf "$f" ;;
+    *.tar.gz|*.tgz) tar xvzf "$f" ;;
+    *.tar.xz|*.txz) tar xvJf "$f" ;;
+    *.tar.zst|*.tzst) tar --zstd -xvf "$f" ;;
+    *.tar) tar xvf "$f" ;;
+    *.zip) unzip "$f" ;;
+    *.7z) 7z x "$f" ;;
+    *.rar) unrar x "$f" ;;
+    *) echo "Unsupported archive: $f"; sleep 1 ;;
+  esac
+}}
+
+cmd trash ${{
+  mkdir -p "$HOME/.local/share/Trash/files" "$HOME/.local/share/Trash/info"
+  ts="$(date +%s)"
+  base="$(basename -- "$f")"
+  dst="$HOME/.local/share/Trash/files/$base.$ts"
+  mv -- "$f" "$dst" && printf "[Trash Info]\nPath=%s\nDeletionDate=%s\n" "$f" "$(date --iso-8601=seconds)" > "$HOME/.local/share/Trash/info/$base.$ts.trashinfo"
+}}
+
+cmd chmodx ${{
+  chmod +x -- "$f"
+}}
+
+cmd togglehidden :set hidden!
+cmd togglesort :set sortby time; set reverse!
+
+map <enter> open
+map l open
+map h updir
+map q quit
+map <esc> quit
+map . togglehidden
+map gh cd ~
+map gd cd ~/Downloads
+map gp cd ~/Pictures
+map gv cd ~/Videos
+map gt cd ~/.local/share/Trash/files
+map m mkdir
+map n mkfile
+map x extract
+map X chmodx
+map d trash
+map yy copy
+map dd cut
+map pp paste
+map U unselect
+map r rename
+map R reload
+map s :set sortby size
+map t :set sortby time
+map e :set sortby ext
+map f :set sortby natural
+map zh :set hidden!
+map zs togglesort
+map / search
+map ? search-back
+map N search-next
+map n search-prev
+map <c-l> redraw
+map <c-r> reload
+
+
