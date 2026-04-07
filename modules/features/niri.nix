@@ -26,6 +26,9 @@
 
       settings = {
         prefer-no-csd = true;
+        hotkey-overlay = {
+          skip-at-startup = null;
+        };
 
         spawn-at-startup = [
           (lib.getExe self'.packages.myNoctalia)
