@@ -81,6 +81,15 @@
         networkmanager.enable = true;
       };
 
+      virtualisation = {
+        containers.enable = true;
+        podman = {
+          enable = true;
+          dockerCompat = true;
+          defaultNetwork.settings.dns_enabled = true;
+        };
+      };
+
       time.timeZone = "Africa/Nairobi";
 
       i18n.defaultLocale = "en_GB.UTF-8";
@@ -151,7 +160,7 @@
       users.users.dd0n3 = {
         isNormalUser = true;
         description = "dd0n3";
-        extraGroups = [ "wheel" "networkmanager" "power" "disk" "video" ];
+        extraGroups = [ "wheel" "networkmanager" "power" "disk" "video" "podman" ];
         packages = with pkgs; [
           tree
           git
@@ -159,6 +168,13 @@
       };
 
       programs = {
+        ssh = {
+          extraConfig = ''
+            Host *
+              IdentityFile ~/.ssh/id_ed25519
+              AddKeysToAgent yes
+          '';
+        };
         mtr.enable = true;
         gnupg.agent = {
           enable = true;
@@ -201,6 +217,7 @@
         XCURSOR_THEME = "Bibata-Modern-Classic";
         XCURSOR_SIZE = "24";
         QT_QPA_PLATFORMTHEME = "gtk3";
+        PODMAN_COMPOSE_WARNING_LOGS = "false";
       };
       environment.sessionVariables.XDG_DATA_DIRS = lib.mkAfter [
         "/run/current-system/sw/share"

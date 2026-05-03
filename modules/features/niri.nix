@@ -9,6 +9,7 @@
   perSystem = { pkgs, lib, self', ... }: {
     packages.myNiri = inputs.wrapper-modules.wrappers.niri.wrap {
       inherit pkgs;
+      v2-settings = true;
 
       # ── Wayland environment variables ─────────────────────────────────────
       env = {
@@ -27,7 +28,7 @@
       settings = {
         prefer-no-csd = true;
         hotkey-overlay = {
-          skip-at-startup = null;
+          skip-at-startup = _: {};
         };
 
         # Compositor / root pointer (env alone is not always enough on niri)
@@ -47,14 +48,14 @@
 
         # ── Input ───────────────────────────────────────────────────────────
         input = {
-          focus-follows-mouse = null;
+          focus-follows-mouse = _: {};
           keyboard = {
             xkb.layout = "us";
             repeat-delay = 250;
             repeat-rate = 50;
           };
           touchpad = {
-            tap = null;
+            tap = _: {};
             # Omit natural-scroll so two-finger scroll is traditional (flag absent = off).
             accel-speed = 0.2;
           };
@@ -78,7 +79,7 @@
             inactive-color = "#282828";
           };
           focus-ring = {
-            off = null;
+            off = _: {};
           };
           preset-column-widths = [
             { proportion = 0.5; }
@@ -111,36 +112,36 @@
         binds = {
           # Apps
           "Mod+Return".spawn-sh = lib.getExe pkgs.kitty;
-          "Mod+Q".close-window = null;
+          "Mod+Q".close-window = _: {};
           "Mod+S".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
           "Mod+L".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call lockScreen lock";
           "Mod+B".spawn-sh = "zen";
           "Mod+E".spawn-sh = "${lib.getExe pkgs.kitty} -e ${lib.getExe pkgs.lf}";
 
           # Focus
-          "Mod+H".focus-column-left = null;
-          "Mod+J".focus-window-down = null;
-          "Mod+K".focus-window-up = null;
-          "Mod+Right".focus-column-right = null;
-          "Mod+Left".focus-column-left = null;
-          "Mod+Down".focus-window-down = null;
-          "Mod+Up".focus-window-up = null;
-          "Mod+Tab".focus-window-previous = null;
+          "Mod+H".focus-column-left = _: {};
+          "Mod+J".focus-window-down = _: {};
+          "Mod+K".focus-window-up = _: {};
+          "Mod+Right".focus-column-right = _: {};
+          "Mod+Left".focus-column-left = _: {};
+          "Mod+Down".focus-window-down = _: {};
+          "Mod+Up".focus-window-up = _: {};
+          "Mod+Tab".focus-window-previous = _: {};
 
           # Move windows
-          "Mod+Shift+H".move-column-left = null;
-          "Mod+Shift+J".move-window-down = null;
-          "Mod+Shift+K".move-column-right = null;
-          "Mod+Shift+L".move-column-right = null;
-          "Mod+Shift+Right".move-column-right = null;
-          "Mod+Shift+Left".move-column-left = null;
-          "Mod+Shift+Down".move-window-down = null;
-          "Mod+Shift+Up".move-window-up = null;
+          "Mod+Shift+H".move-column-left = _: {};
+          "Mod+Shift+J".move-window-down = _: {};
+          "Mod+Shift+K".move-window-up = _: {};
+          "Mod+Shift+L".move-column-right = _: {};
+          "Mod+Shift+Right".move-column-right = _: {};
+          "Mod+Shift+Left".move-column-left = _: {};
+          "Mod+Shift+Down".move-window-down = _: {};
+          "Mod+Shift+Up".move-window-up = _: {};
 
           # Window state
-          "Mod+F".fullscreen-window = null;
-          "Mod+Shift+F".toggle-window-floating = null;
-          "Mod+R".switch-preset-column-width = null;
+          "Mod+F".fullscreen-window = _: {};
+          "Mod+Shift+F".toggle-window-floating = _: {};
+          "Mod+R".switch-preset-column-width = _: {};
 
           # Workspaces
           "Mod+1".focus-workspace = 1;
@@ -155,8 +156,8 @@
           "Mod+Shift+5".move-window-to-workspace = 5;
 
           # Screenshot
-          "Print".screenshot = null;
-          "Mod+Print".screenshot-screen = null;
+          "Print".screenshot = _: {};
+          "Mod+Print".screenshot-screen = _: {};
 
           # Media keys
           "XF86AudioLowerVolume".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call volume decrease";

@@ -16,5 +16,17 @@
     };  
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+    # Swap is currently not defined in this repo; enabling zram helps avoid OOM kills
+    # during heavy builds on low-RAM systems.
+    zramSwap = {
+      enable = true;
+      memoryPercent = 100;
+      algorithm = "zstd";
+    };
+
+    # Userspace OOM handling pairs well with zram and helps avoid hard lockups
+    # when memory pressure spikes during large builds.
+    systemd.oomd.enable = true;
   };
 }
